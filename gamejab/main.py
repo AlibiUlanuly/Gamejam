@@ -4,6 +4,7 @@ from pygame.locals import *
 from utility import *
 from utility.entities import *
 
+
 class Game():
     def __init__(self):
         pygame.init()
@@ -11,7 +12,7 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.player = Player(self.screen)
-        self.npc = NPC()
+        self.npc = NPC(self.screen)
         self.door = Door()
 
         self.gameStateManager = GameStateManager('start')
@@ -47,7 +48,8 @@ class Game():
             # Render NPC only when the state is "start"
             if self.gameStateManager.get_state() == 'start':
                 self.screen.blit(self.npc.image, self.npc.rect)
-
+                self.npc.update(self.player, self.screen)
+                self.screen.blit(self.door.image, self.door.rect)
 
             pygame.display.update()
             self.clock.tick(FPS)
