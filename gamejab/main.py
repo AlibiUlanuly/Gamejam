@@ -8,6 +8,42 @@ from utility.objects import *
 from utility.questions import questions_quiz
 import random
 
+class ControlsMenu:
+    def __init__(self, display, gameStateManager):
+        self.display = display
+        self.gameStateManager = gameStateManager
+        self.font = pygame.font.Font('gamejab/materials/fonts/Font2.ttf', 30)
+        self.key_pressed = False
+        
+        self.controls_text = [
+            "Controls:",
+            "E: Interact with objects",
+            "SPACEBAR: Interact with NPCs",
+            "ENTER: Choose an option",
+            "Arrows: Walk",
+            "Press ESC to return to main menu"
+        ]
+
+    def handle_events(self):
+        keys = pygame.key.get_pressed()
+        if not self.key_pressed and keys[pygame.K_ESCAPE]:
+            self.gameStateManager.set_state('main_menu')
+            self.key_pressed = True
+        
+        if not any(keys):
+            self.key_pressed = False
+
+    def draw_controls(self):
+        self.display.fill(WHITE)
+        for i, line in enumerate(self.controls_text):
+            text = self.font.render(line, True, BLACK)
+            text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + i * 30))
+            self.display.blit(text, text_rect)
+
+    def run(self):
+        self.handle_events()
+        self.draw_controls()
+
 class GameOverScreen:
     def __init__(self, display, gameStateManager):
         self.display = display
@@ -74,8 +110,9 @@ class Game():
         self.level = Level(self.screen, self.gameStateManager)
         self.level2 = Level2(self.screen, self.gameStateManager, self.event5, self.player, self.npc2)
         self.game_over_screen = GameOverScreen(self.screen, self.gameStateManager)
+        self.controls_menu = ControlsMenu(self.screen, self.gameStateManager)
 
-        self.states = {'main_menu': self.main_menu, 'start': self.start, 'level': self.level, 'level2': self.level2, 'game_over': self.game_over_screen}
+        self.states = {'main_menu': self.main_menu, 'start': self.start, 'level': self.level, 'level2': self.level2, 'game_over': self.game_over_screen, 'controls': self.controls_menu}
 
     def start_quiz(self):
         self.quiz_started = True
@@ -98,6 +135,8 @@ class Game():
                 self.main_menu.run()
             elif self.gameStateManager.get_state() == 'game_over':
                 self.game_over_screen.run()
+            elif self.gameStateManager.get_state() == 'controls':
+                self.controls_menu.run()
             else:
                 # Move the player
                 self.player.move()
