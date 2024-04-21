@@ -1,4 +1,4 @@
-questions = [
+questions_quiz = [
     {
         "question": "What is the command that allows you to import an image, i.e sprite?",
         "options": ["pygame.image.load()", "pygame.load.image()", "image.load()", "load.image()"],
