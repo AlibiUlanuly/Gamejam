@@ -33,7 +33,7 @@ background3 = pygame.image.load('gamejab/materials/images/background3.png')
 background_image3 = pygame.transform.scale(background3, (WIDTH, HEIGHT))
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, screen, event1, event2, event3, questions, event5):
+    def __init__(self, screen, event1, event2, event3, questions, event5, event6, event_f):
         super().__init__()
         original_image = pygame.image.load('gamejab/materials/professor/Professor3.png')
         scaled_width = original_image.get_width() // 4
@@ -49,6 +49,8 @@ class NPC(pygame.sprite.Sprite):
         self.event2 = event2
         self.event3 = event3
         self.event5 = event5
+        self.event6 = event6
+        self.event_f = event_f
         self.questions = questions
         self.dialogue_lines = dialogue_script[:]
         
@@ -74,7 +76,14 @@ class NPC(pygame.sprite.Sprite):
                     if self.event5.completed:
                         self.dialogue_lines = dialogue_script3[:]
                         self.current_line_index = 0
+                    elif self.event_f.completed:
+                        self.dialogue_lines = dialogue_script_failed[:]
+                        self.portrait_image = pygame.image.load('gamejab/materials/professor/sadprofessor.png')
+                        self.portrait_image = pygame.transform.scale(self.portrait_image, (200, 200))
+                        self.current_line_index = 0
                     else:
+                        self.portrait_image = pygame.image.load('gamejab/materials/professor/professor-half.png')  # Adjust the path as necessary
+                        self.portrait_image = pygame.transform.scale(self.portrait_image, (200, 200)) 
                         self.dialogue_lines = dialogue_script2[:]
                         self.current_line_index = 0                   
                 else:
@@ -99,6 +108,8 @@ class NPC(pygame.sprite.Sprite):
                         self.event1.completed = True
                     if self.event2.completed == True and self.event3.completed == False:  # Check if event2 is completed and event3 is not yet completed
                         self.event3.completed = True 
+                    if self.event_f.completed == True:
+                        self.event6.completed = True
 
             # Reset dialogue box with updated index
                 self.dialogue_box.current_line_index = self.current_line_index

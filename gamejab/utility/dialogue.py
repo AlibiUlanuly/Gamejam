@@ -26,3 +26,9 @@ dialogue_script4 = [
     "Teacher: You heard me, get ready! Here I come!",
     "AAAHHHH"
 ]
+
+dialogue_script_failed = [
+    "Teacher: Unfortunately, you didn't answer all my questions correctly.",
+    "Teacher: I'm afraid I can't give you full marks for the endterm.",
+    "Teacher: Let's hope that you're gonna do good in the final examination."
+]

@@ -59,7 +59,7 @@ class GameOverScreen:
         if not self.key_pressed and keys[pygame.K_RETURN]:
             self.gameStateManager.set_state('main_menu')
             self.key_pressed = True
-        
+
         if not any(keys):
             self.key_pressed = False
 
@@ -95,6 +95,7 @@ class Game():
         self.event4 = Event4()
         self.event5 = Event5()
         self.event6 = Event6()
+        self.event_failed = Event_failed()
         
         self.correct_answers_count = 0
         self.questions = questions_quiz
@@ -102,7 +103,7 @@ class Game():
         self.quiz_box = QuizBox(self.screen, self.questions, self.event4)
 
         self.player = Player(self.screen)
-        self.npc = NPC(self.screen, self.event1, self.event2, self.event3, self.questions, self.event5)
+        self.npc = NPC(self.screen, self.event1, self.event2, self.event3, self.questions, self.event5, self.event6, self.event_failed)
         self.npc2 = NPC2(self.screen, self.event6)
         self.gameStateManager = GameStateManager('main_menu')
         self.main_menu = MainMenu(self.screen, self.gameStateManager)
@@ -195,6 +196,8 @@ class Game():
                     self.quiz_started = False
                     if self.correct_answers_count == 3:
                         self.event5.completed = True
+                    else:
+                        self.event_failed.completed = True
                 self.screen.blit(self.player.image, self.player.rect)
                 # Render NPC only when the state is "start"
                 if self.gameStateManager.get_state() == 'start':
@@ -203,7 +206,14 @@ class Game():
                 if self.quiz_started and self.event3.completed:
                     self.quiz_box.update()
                 if self.event6.completed == True:
+                    self.event1.completed = False
+                    self.event2.completed = False
+                    self.event3.completed = False
+                    self.event4.completed = False
+                    self.event5.completed = False
+                    self.event_failed = False
                     self.gameStateManager.set_state('game_over')
+                    self.event6.completed = False
             pygame.display.update()
             self.clock.tick(FPS)
 
@@ -294,6 +304,11 @@ class Event5:
 class Event6:
     def __init__(self):
         self.completed = False
+
+class Event_failed:
+    def __init__(self):
+        self.completed = False
+
 
 
 if __name__ == '__main__':
