@@ -21,7 +21,7 @@ dialogue_script4 = [
     "How are you so fast?...",
     "Teacher: I regularly participate in marathons.",
     "Makes sense.",
-    "Teacher: Anyway, this is your final task. You need to defeat me in judo.",
+    "Teacher: Anyway, this is your final task. You need to defeat me in jujutsu.",
     "...Wait, what?",
     "Teacher: You heard me, get ready! Here I come!",
     "AAAHHHH"
